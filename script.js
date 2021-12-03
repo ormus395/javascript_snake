@@ -5,6 +5,16 @@ Need to work on collision with walls and rabbit
 if colide with wall, clear the interval and end game
 if collide with the rabbit, update score, increase size of snake
 create new rabbit and place the new rabbit
+
+GAME IS DETECTING RABBIT COLLISION
+NEED TO CHANGE THE WAY THE SNAKE IS BUILT
+MIGHT USED A LINKED LIST
+
+when creating a the snake as a linked list, create a new head
+// when eating rabbit,
+
+to handle movement, create a new head with the position of the current direction
+this pushed the links down, when doing this the tail must be deleted
 */
 
 const SCALE = 20;
@@ -27,6 +37,11 @@ class Queue {
   }
 }
 
+// to be used to create the snake
+class LinkedList {
+
+}
+
 function trackKeys(keys) {
   let down = Object.create(null);
 
@@ -40,7 +55,6 @@ function trackKeys(keys) {
       }
       event.preventDefault();
     }
-    console.log("Pressed")
   }
   window.addEventListener("keydown", track);
   // window.addEventListener("keyup", track);
@@ -70,12 +84,20 @@ class Game {
     this.rabbit = rabbit
   }
 
+  // if making the snake a linked list, update method calls update on
+  // all of the links in the snake
   update(keys) {
+    console.log(this.checkCollision())
     this.snake.update(keys);
     let newGrid = new Grid(this.snake, this.rabbit);
     // this.grid.update(this.snake);
     this.grid = newGrid;
     this.grid.drawGrid(this.root)
+  }
+
+  checkCollision() {
+    if(this.snake.x === this.rabbit.x && this.snake.y === this.rabbit.y)
+      return "Ate rabbit";
   }
 }
 
@@ -88,11 +110,13 @@ class Game {
 // 1 = up
 // 0 = no y moving
 
+// transform into linked list
+// when eating the rabbit create a new node
 class Snake {
   constructor() {
     this.x = 0;
     this.y = 0;
-    this.size = 1;
+    this.size = [];
     this.speed = 1;
     this.xDirection = 0;
     this.yDirection = 0;
@@ -101,23 +125,26 @@ class Snake {
   toString() {
     return "S";
   }
+
+  // need to make the snake bigger
+  ateRabbit() {
+  }
 }
 
-Snake.prototype.update = function(keys) {
-  console.log(keys, 'snake update')
+Snake.prototype.update = function(keys, rabbit) {
   let move = keys.getFront();
 
   if(move) {
-    if(move.ArrowUp) {
+    if(move.ArrowUp && this.yDirection != 1) {
       this.yDirection = -1;
       this.xDirection = 0;
-    } else if(move.ArrowDown) {
+    } else if(move.ArrowDown && this.yDirection != -1) {
       this.yDirection = 1;
       this.xDirection = 0;
-    } else if(move.ArrowLeft) {
+    } else if(move.ArrowLeft && this.xDirection != 1) {
       this.yDirection = 0;
       this.xDirection = -1;
-    } else if(move.ArrowRight) {
+    } else if(move.ArrowRight && this.xDirection != -1) {
       this.yDirection = 0;
       this.xDirection = 1;
     }
@@ -182,10 +209,6 @@ class Grid {
 
     parent.appendChild(displayGrid);
   }
-
-  update(snake, rabbit) {
-    this.board[snake.y][snake.x] = snake.toString();
-  }
 }
 
 let randoPOS = generateRandomPOS();
@@ -194,7 +217,6 @@ let game = new Game(new Snake(), new Rabbit(randoPOS.x, randoPOS.y));
 function update() {
   // want to update the game
   game.update(arrowKeys);
-  console.log("im updating the game")
 }
 
 update()
