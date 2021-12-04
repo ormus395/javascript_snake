@@ -59,4 +59,4 @@ function update() {
 
 update()
 
-setInterval(update, 200);
+setInterval(update, 500);
