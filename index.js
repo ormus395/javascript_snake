@@ -1,6 +1,10 @@
 /*
 TODOS:
   Need to work on body collision
+  todo this, can make the grid contain snake objects, if head hits body
+  segment, check direction and if they dont match, hit body.
+  this would get rid of the condition where the game ends because the head
+  position is going to always cause a false positive
 */
 import Game from "./game/Game.js";
 import Queue from "./util/Queue";

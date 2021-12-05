@@ -47,7 +47,7 @@ Snake.prototype.update = function (keys, rabbit) {
   // alg for moving and updating
   // create a new head with new position based on the dirtection
   // make current head new head
-  let oldPOS = this.head.data;
+  let oldPOS = Object.create(this.head.data);
   let newPOS = {
     x: (oldPOS.x += this.xDirection),
     y: (oldPOS.y += this.yDirection),

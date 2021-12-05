@@ -14,13 +14,36 @@ class Game {
   // if making the snake a linked list, update method calls update on
   // all of the links in the snake
   update(keys) {
+    let oldSnakePOS = Object.create(this.snake.head.data);
     this.snake.update(keys, this.rabbit);
-    let snakePOS = this.snake.head.data;
-    if (snakePOS.x == this.rabbit.x && snakePOS.y == this.rabbit.y) {
+
+    let snakeDirection = {
+      yD: this.snake.yDirection,
+      xD: this.snake.xDirection,
+    };
+
+    if (this.grid.isCollision(this.snake)) {
+      return -1;
+    }
+
+    if (
+      this.grid.board[oldSnakePOS.y + snakeDirection.yD][
+        oldSnakePOS.x + snakeDirection.xD
+      ] instanceof Snake &&
+      this.snake.head.next
+    ) {
+      console.log("@@@ HIT BODY @@@");
+      return -1;
+    }
+
+    let newSnakePOS = Object.create(this.snake.head.data);
+    if (newSnakePOS.x == this.rabbit.x && newSnakePOS.y == this.rabbit.y) {
       this.rabbit = new Rabbit(this.generateRandomPOS());
     }
+
     let newGrid = new Grid(this.snake, this.rabbit);
-    if (newGrid.isCollision(this.snake) || !newGrid) {
+
+    if (!newGrid) {
       return -1;
     }
     // this.grid.update(this.snake);
