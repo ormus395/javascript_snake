@@ -85,37 +85,45 @@ Snake.prototype.update = function (keys, rabbit) {
   // push the new node instead of reassinging the head
   // if there is no tail, create the tail
   if (newPOS.x === rabbit.x && newPOS.y === rabbit.y) {
-    console.log("GEtting bigger");
+    console.log("*** GETTING BIGGER ***");
     newHead.next = this.head;
     newHead.previous = null;
     this.head.previous = newHead;
 
     if (!this.tail) {
-      this.tail = this.head;
+      this.tail = new Node(oldPOS);
+      this.tail.previous = newHead;
+      this.tail.next = null;
     }
 
     this.head = newHead;
-    return;
-  }
 
-  // if just the head
-  if (!this.tail) {
-    this.head = newHead;
+    // console.log("Head: ", this.head);
+    // console.log("Tail: ", this.tail);
   }
   // then make the tails previous node the new tail,
   //and delete the old tail
   else if (this.tail) {
-    console.log("I shouldnt call with getting bigger");
-    console.log("tail in snake update function: ", this.tail);
+    // still need to assign new head
+    newHead.next = this.head;
+    newHead.previous = null;
+
+    this.head.previous = newHead;
+    this.head = newHead;
+
+    // console.log("Head", this.head);
+    // console.log("tail in snake update function: ", this.tail);
+    // console.log("Tail previous: ", this.tail.previous);
     // grab the tails previous nodes position
-    let pos;
     if (this.tail.previous) {
-      pos = this.tail.previous.data;
+      this.tail = this.tail.previous;
+      this.tail.next = null;
     }
-    let newTail = new Node(pos);
-    newTail.next = null;
-    this.tail = newTail;
+  } else {
+    this.head = newHead;
   }
+
+  // this.head = newHead;
 
   keys.dequeue();
 };

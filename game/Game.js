@@ -15,15 +15,17 @@ class Game {
   // all of the links in the snake
   update(keys) {
     this.snake.update(keys, this.rabbit);
+    let snakePOS = this.snake.head.data;
+    if (snakePOS.x == this.rabbit.x && snakePOS.y == this.rabbit.y) {
+      this.rabbit = new Rabbit(this.generateRandomPOS());
+    }
     let newGrid = new Grid(this.snake, this.rabbit);
+    if (newGrid.isCollision(this.snake) || !newGrid) {
+      return -1;
+    }
     // this.grid.update(this.snake);
     this.grid = newGrid;
     this.grid.drawGrid(this.root);
-  }
-
-  checkCollision() {
-    if (this.snake.x === this.rabbit.x && this.snake.y === this.rabbit.y)
-      return "Ate rabbit";
   }
 
   generateRandomPOS() {
