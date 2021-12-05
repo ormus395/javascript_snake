@@ -24,33 +24,6 @@ class Snake {
   toString() {
     return "S";
   }
-
-  // need to make the snake bigger
-  // receives pos object
-  // create a new node, and assign the new position to the node
-  // make new node the head
-  getBigger() {
-    console.log("Got bigger");
-    // create a new head, head has next coords,
-    // this creates the new head
-    let lastPOS = this.head.data;
-    let newPOS = {
-      x: (lastPOS.x += this.xDirection),
-      y: (lastPOS.y += this.yDirection),
-    };
-    let newHead = new Node(newPOS);
-    newHead.next = this.head;
-    newHead.previous = null;
-
-    // if not tail, create new tail
-    if (!this.tail) {
-      this.tail = new Node(this.head.data);
-      this.tail.previous = newHead;
-      this.tail.next = null;
-    }
-
-    this.head = newHead;
-  }
 }
 
 Snake.prototype.update = function (keys, rabbit) {
